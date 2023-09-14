@@ -52,7 +52,7 @@ function calcLowlandStreakedTernec(height) {
 }
 
 function calcDumboOctopus(height) {
-    return height / 1.8
+    return height / 0.25
 }
 
 function calcPinkFairyArmadillo(height) {
