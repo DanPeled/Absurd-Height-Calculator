@@ -1,80 +1,54 @@
 let resultText = document.getElementById("resultText")
 let calcButton = document.getElementById("calculateButton")
 let textArea = document.getElementById("textarea")
-let dropdown = document.getElementById("dropdown")
+let measurementDropdown = document.getElementById("measurementDropdown")
+let measurementTypeDropdown = document.getElementById("measure-type")
 
-const calculationFunctions = {
-    "snail": calcSnail,
-    "water bear": calcWaterBear,
-    "axolotl": calcAxolotl,
-    "star nosed mole": calcStarNosedMole,
-    "lowland streaked ternec": calcLowlandStreakedTernec,
-    "dumbo octopus": calcDumboOctopus,
-    "pink fairy armadillo": calcPinkFairyArmadillo,
-    "red lipped batfish": calcRedLippedBatfish,
-    "hedgehog": calcHedgehog,
-    "three year-old": calcThreeYearOld,
-    "blobfish": calcBlobfish,
-    "tomato": calcTomato
+
+const calculationHeightMeasures = {
+    "snail": 0.045,
+    "water bear": 0.0012,
+    "axolotl": 0.3,
+    "star nosed mole": 0.019,
+    "lowland streaked ternec": 0.14,
+    "dumbo octopus": 0.25,
+    "pink fairy armadillo": 0.115,
+    "red lipped batfish": 0.4,
+    "hedgehog": 0.3,
+    "three year-old": 1.016,
+    "blobfish": 0.3,
+    "tomato": 0.07,
+    "bamba": 0.03
 }
-function calc(height, type) {
-    const func = calculationFunctions[type] || calcBamba
-    const suffix = toTitleCase(type)
+const calculationWeightMeasures = {
+    "snail": 0.003028,
+    "water bear": 0.00001,
+    "axolotl": 2.5,
+    "star nosed mole": 0.049,
+    "lowland streaked ternec": 2.25,
+    "dumbo octopus": 5.9,
+    "pink fairy armadillo": 0.120,
+    "red lipped batfish": 0.9,
+    "hedgehog": 0.8,
+    "three year-old": 13.5,
+    "blobfish": 9,
+    "tomato": 0.455,
+    "bamba": 0.00189
+}
 
-    if (func(height) !== 1) {
-        resultText.innerText = `${func(height).toFixed(2)} ${suffix}s`
+function calc(height, measure, measureType) {
+    const measurement = (measureType == "height") ?
+        calculationHeightMeasures[measure] : calculationWeightMeasures[measure];
+
+    const suffix = toTitleCase(measure);
+    const newHeight = height / measurement;
+    if (newHeight !== 1) {
+        resultText.innerText = `${newHeight.toFixed(2)} ${suffix}s`
     } else {
-        resultText.innerText = `${func(height).toFixed(2)} ${suffix}`
+        resultText.innerText = `${newHeight.toFixed(2)} ${suffix}`
     }
 }
-function calcBamba(height) {
-    return height / 0.03
-}
 
-function calcSnail(height) {
-    return height / 0.045
-}
-
-function calcWaterBear(height) {
-    return height / 0.0012
-}
-
-function calcAxolotl(height) {
-    return height / 0.3
-}
-
-function calcStarNosedMole(height) {
-    return height / 0.019
-}
-
-function calcLowlandStreakedTernec(height) {
-    return height / 0.14
-}
-
-function calcDumboOctopus(height) {
-    return height / 0.25
-}
-
-function calcPinkFairyArmadillo(height) {
-    return height / 0.115
-}
-
-function calcRedLippedBatfish(height) {
-    return height / 0.4
-}
-
-function calcHedgehog(height) {
-    return height / 0.3
-}
-function calcThreeYearOld(height) {
-    return height / 1.016
-}
-function calcBlobfish(height) {
-    return height / 0.3
-}
-function calcTomato(height){
-    return height / 0.07
-}
 // Restricts input for the given textbox to the given inputFilter function.
 function setInputFilter(textbox, inputFilter, errMsg) {
     ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop", "focusout"].forEach(function (event) {
@@ -111,7 +85,7 @@ setInputFilter(textArea, function (value) {
 }, "Only digits and '.' are allowed")
 
 calcButton.addEventListener("click", function () {
-    calc(textArea.value, dropdown.value)
+    calc(textArea.value, measurementDropdown.value, measurementTypeDropdown.value)
 })
 
 function toTitleCase(str) {
@@ -122,24 +96,29 @@ function toTitleCase(str) {
     }
 }
 
-var options = Array.from(dropdown.options)
+var options = Array.from(measurementDropdown.options)
 options.sort(function (a, b) {
     return a.text.localeCompare(b.text)
 })
-dropdown.innerHTML = ""
+measurementDropdown.innerHTML = ""
 options.forEach(function (option) {
-    dropdown.appendChild(option)
+    measurementDropdown.appendChild(option)
 })
 
-// Sort the table rows alphabetically (excluding the header)
-var table = document.querySelector("table")
-var rows = Array.from(table.querySelectorAll("tr"))
-rows.shift() // Remove the header row
-rows.sort(function (a, b) {
-    var measurementA = a.cells[0].textContent.toLowerCase()
-    var measurementB = b.cells[0].textContent.toLowerCase()
-    return measurementA.localeCompare(measurementB)
-})
-rows.forEach(function (row) {
-    table.appendChild(row)
-})
+function sortTable(table) {
+    var rows = Array.from(table.querySelectorAll("tr"));
+    rows.shift(); // Remove the header row
+    rows.sort(function (a, b) {
+        var measurementA = a.cells[0].textContent.toLowerCase();
+        var measurementB = b.cells[0].textContent.toLowerCase();
+        return measurementA.localeCompare(measurementB);
+    });
+    rows.forEach(function (row) {
+        table.appendChild(row);
+    });
+}
+var tables = document.querySelectorAll("table");
+
+tables.forEach(function (table) {
+    sortTable(table);
+});
