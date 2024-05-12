@@ -18,7 +18,8 @@ const calculationHeightMeasures = {
     "three year-old": 1.016,
     "blobfish": 0.3,
     "tomato": 0.07,
-    "bamba": 0.03
+    "bamba": 0.03,
+    "stanley even-heat pot": 0.213106
 }
 const calculationWeightMeasures = {
     "snail": 0.003028,
@@ -33,7 +34,8 @@ const calculationWeightMeasures = {
     "three year-old": 13.5,
     "blobfish": 9,
     "tomato": 0.455,
-    "bamba": 0.00189
+    "bamba": 0.00189,
+    "stanley even-heat pot": 1.238307
 }
 
 function calc(height, measure, measureType) {
