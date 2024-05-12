@@ -18,6 +18,7 @@ const calculationMeasures = {
     "blobfish": { weight: 9, height: 0.3 },
     "tomato": { weight: 0.455, height: 0.07 },
     "bamba": { weight: 0.00189, height: 0.03 },
+    "camel": { weight: 449.056, height: 1.8 },
     "stanley even-heat pot": { weight: 1.238307, height: 0.213106 }
 };
 
